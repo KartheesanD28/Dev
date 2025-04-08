@@ -1,0 +1,30 @@
+name: HTML CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install HTMLHint
+        run: npm install -g htmlhint
+
+      - name: Run HTML Lint
+        run: htmlhint index.html || true
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.KEY1 }}
+          branch: gh-pages
+          folder: .
